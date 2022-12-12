@@ -1,12 +1,12 @@
 cabal-version:      2.4
 name:               logical-constraints
-version:            0.1.0.0
+version:            0.1.0.1
 
 -- A short (one-line) description of the package.
 synopsis:           Simple logical constraints 'syntax-sugar' writing library.
 
 -- A longer description of the package.
-description:        Some library functions and data to simplify the writing of the simple logical constraints of Eq and Ord classes data instances.
+description:        Some library functions and data to simplify the writing of the simple logical constraints of Ord classes data instances.
 
 -- A URL where users can report bugs.
 bug-reports:        https://github.com/Oleksandr-Zhabenko/logical-constraints/issues

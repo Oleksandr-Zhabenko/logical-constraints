@@ -5,20 +5,24 @@
 -- Stability   :  Experimental
 -- Maintainer  :  oleksandr.zhabenko@yahoo.com
 --
--- 
+-- Some simple logical encoding 'syntactical sugar' to represent point-wise or intervals-based logics.
 
 module Logical.OrdConstraints where
 
 import Data.Foldable
 import Data.Maybe
 
+-- | Data type to encode the simple logical contstraints for some 'Ord'ered data type value to be kept in some bounds (to lay in some intervals or points). 'O' constructor  encodes
+-- point-wise logics, and 'C' encodes intervals logics.
 data OrdConstraints a = O [a] | C [a] deriving (Eq, Ord, Show, Read)
 
 type OrdCs t a = t (OrdConstraints a)
 
+-- | The predicate to check whether the data is  encoded logically correct just enough to be used by the functions in the library (minimal necessary validation). Checks whether 
+-- at least just one point or interval is set.
 validOrdCs :: Ord a =>  OrdConstraints a -> Bool
-validOrdCs (O (x:_)) = True
-validOrdCs (C xs@(x:y:_)) = (length xs `rem` 2) == 0
+validOrdCs (O (_:_)) = True
+validOrdCs (C xs@(_:_:_)) = (length xs `rem` 2) == 0
 validOrdCs _ = False
 
 ordCs2Predicate1 :: Ord a => OrdConstraints a -> a -> Bool
