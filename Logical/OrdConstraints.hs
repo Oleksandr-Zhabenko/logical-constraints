@@ -38,18 +38,18 @@ ordCs2Predicate1 x@(C xs) y
 ordCs2HPred1 :: (Ord a, Foldable t1) => OrdCs t1 a -> a -> Bool
 ordCs2HPred1 cs y = any (\c -> ordCs2Predicate1 c y) $ cs
 
+-- | Just the head of the list is used. Therefore, is intended to be used mainly with the singleton list as the second argument.
 ordCs2Predicate :: Ord a => OrdConstraints a -> [a] -> Bool
-ordCs2Predicate x@(O xs) ys
- | validOrdCs x = any (== head ys) xs
- | otherwise = False
-ordCs2Predicate x@(C xs) ys
- | validOrdCs x = any (\(t:u:_) -> head ys >= t && head ys <= u) . f $ xs
- | otherwise = False
-    where f (x:y:xs) = [x,y]:f xs
-          f _ = []
+ordCs2Predicate x ys
+ | null ys = False
+ | otherwise = ordCs2Predicate1 x (head ys)
+{-# INLINE ordCs2Predicate #-}
 
+-- | Just the head of the list is used. Therefore, is intended to be used mainly with the singleton list as the second argument.
 ordCs2HPred :: (Ord a, Foldable t1) => OrdCs t1 a -> [a] -> Bool
-ordCs2HPred cs ys = any (\c -> ordCs2Predicate c ys) $ cs
+ordCs2HPred cs ys 
+ | null ys = False
+ | otherwise = any (\c -> ordCs2Predicate1 c (head ys)) $ cs
 
 ordCs2PredicateG :: (Ord a, Foldable t) => OrdConstraints a -> (t a -> Maybe a) -> t a -> Bool
 ordCs2PredicateG x@(O xs) p ys
